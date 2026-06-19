@@ -106,14 +106,14 @@ N1.7 架構（`Gr00tN1d7`）需要特定範圍的 transformers。為確認版本
 grep -i "transformers" pyproject.toml
 
 ```
-確認 `pyproject.toml` 要求：`transformers==4.57.3`（指定確切版本）
-為避免開發版或過舊版本造成的 dataclass 問題，請直接安裝以下穩定版：
+
+確認 `pyproject.toml` 要求：`transformers==4.57.3`（指定確切版本）。
+為避免開發版或過舊版本造成的 dataclass 問題，並且維持環境相依性的完整不衝突，請**直接安裝該確切穩定版**：
 
 ```bash
-pip install "transformers>=4.57.0,<5.0.0" --upgrade
+pip install transformers==4.57.3
 
 ```
-若 pip 提示 gr00t requires transformers==4.57.3，這只是版本警告，不影響執行，可忽略。
 ### 10-2. 修復 demo_data 的大檔案 (LFS)
 在執行測試前，必須確保 `demo_data` 內的影像與 `.parquet` 資料庫已經透過 Git LFS 正確下載，否則會發生 `pyarrow.lib.ArrowInvalid` 錯誤：
 
@@ -135,6 +135,12 @@ hf auth login
 
 ```
 在提示字元後，貼上剛剛複製的 Token（輸入時不會顯示字元）。
+
+如果你未來確實有上傳模型的需求，只要複製貼上並執行畫面中建議的那行指令即可：
+
+```Bash
+git config --global credential.helper store
+```
 
 ### 10-4. 執行 zero-shot 推論測試
 
@@ -211,6 +217,3 @@ CUDA_VISIBLE_DEVICES=0 python \
 `getting_started/data_preparation.md`（repo 內）
 
 ---
-
-*Exported from [Voyager](https://github.com/Nagi-ovo/gemini-voyager)*  
-*Generated on June 19, 2026 at 09:55 PM*
