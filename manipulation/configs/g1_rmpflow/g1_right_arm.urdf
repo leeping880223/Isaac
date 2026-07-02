@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+  手刻的最小 URDF：只涵蓋 G1 右手臂運動鏈（torso_link 固定基座 -> 7 個旋轉關節 ->
+  right_wrist_yaw_link 末端執行器），不含腿部/腰部/左手臂。
+  關節的 origin xyz/rpy 與 axis 皆從實際載入的
+  /home/imcl/Downloads/g1_29dof_rev_1_0/g1_29dof_rev_1_0.usd 用
+  manipulation/scripts/inspect_g1_arm_transforms.py 讀取 UsdPhysics.Joint 的
+  localPos0/localRot0 取得，只用於 Lula RMPflow 的運動學計算，不含慣性/碰撞網格。
+-->
+<robot name="g1_right_arm">
+  <link name="torso_link"/>
+  <link name="right_shoulder_pitch_link"/>
+  <link name="right_shoulder_roll_link"/>
+  <link name="right_shoulder_yaw_link"/>
+  <link name="right_elbow_link"/>
+  <link name="right_wrist_roll_link"/>
+  <link name="right_wrist_pitch_link"/>
+  <link name="right_wrist_yaw_link"/>
+  <link name="right_rubber_hand"/>
+
+  <joint name="right_shoulder_pitch_joint" type="revolute">
+    <parent link="torso_link"/>
+    <child link="right_shoulder_pitch_link"/>
+    <origin xyz="0.0039563 -0.10021 0.24778" rpy="-0.27931 0.00005 0.00019"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-3.089" upper="2.670" velocity="20" effort="100"/>
+  </joint>
+
+  <joint name="right_shoulder_roll_joint" type="revolute">
+    <parent link="right_shoulder_pitch_link"/>
+    <child link="right_shoulder_roll_link"/>
+    <origin xyz="0 -0.038 -0.013831" rpy="0.27925 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-2.251" upper="1.588" velocity="20" effort="100"/>
+  </joint>
+
+  <joint name="right_shoulder_yaw_joint" type="revolute">
+    <parent link="right_shoulder_roll_link"/>
+    <child link="right_shoulder_yaw_link"/>
+    <origin xyz="0 -0.00624 -0.1032" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-2.618" upper="2.618" velocity="20" effort="100"/>
+  </joint>
+
+  <joint name="right_elbow_joint" type="revolute">
+    <parent link="right_shoulder_yaw_link"/>
+    <child link="right_elbow_link"/>
+    <origin xyz="0.015783 0 -0.080518" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.047" upper="2.094" velocity="20" effort="100"/>
+  </joint>
+
+  <joint name="right_wrist_roll_joint" type="revolute">
+    <parent link="right_elbow_link"/>
+    <child link="right_wrist_roll_link"/>
+    <origin xyz="0.1 -0.00188791 -0.01" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.972" upper="1.972" velocity="20" effort="100"/>
+  </joint>
+
+  <joint name="right_wrist_pitch_joint" type="revolute">
+    <parent link="right_wrist_roll_link"/>
+    <child link="right_wrist_pitch_link"/>
+    <origin xyz="0.038 0 0" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.614" upper="1.614" velocity="20" effort="100"/>
+  </joint>
+
+  <joint name="right_wrist_yaw_joint" type="revolute">
+    <parent link="right_wrist_pitch_link"/>
+    <child link="right_wrist_yaw_link"/>
+    <origin xyz="0.046 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-1.614" upper="1.614" velocity="20" effort="100"/>
+  </joint>
+
+  <!-- right_rubber_hand 是焊死在 right_wrist_yaw_link 上的手掌網格（USD 裡是它的固定
+       子節點，沒有自己的關節），offset 從實際 USD 用 UsdGeom.Xformable 讀出來的
+       local translate 取得：(0.0415, -0.003, 0)。加這個固定關節是為了讓 RMPflow
+       直接瞄準手掌中心，而不是手腕，之前沒加這個會讓手掌在畫面上看起來偏離目標
+       約 4cm（手腕已經到位，但手掌網格還往外伸一截）。 -->
+  <joint name="right_rubber_hand_joint" type="fixed">
+    <parent link="right_wrist_yaw_link"/>
+    <child link="right_rubber_hand"/>
+    <origin xyz="0.0415 -0.003 0" rpy="0 0 0"/>
+  </joint>
+</robot>

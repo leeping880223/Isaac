@@ -1,0 +1,29 @@
+# YOLO 資料集轉換設定
+# 路徑改用相對路徑或環境變數，避免 Docker / 不同機器上失效
+
+paths:
+  raw_data_dir: "${DATA_ROOT}/output/synthetic_data"
+  yolo_data_dir: "${DATA_ROOT}/output/yolo_dataset"
+
+# 物件類別對應（YOLO class id 由 0 開始，順序即 id）
+# 對應 assets/objects/ 裡的手術器械，Isaac Replicator 輸出的 semantic label 是全小寫
+class_map:
+  bone curette hemingway: 0
+  bone curette lucas: 1
+  bone forceps 1: 2
+  bone forceps 1 verbrugge: 3
+  burr 1: 4
+  burr 2: 5
+  burr 3: 6
+  cottle chisel: 7
+  diagnostic sharp explorer: 8
+  fucation probe: 9
+  lambotte rib elevator chisel: 10
+  periodontometer: 11
+  scalpel broad handle only: 12
+  scalpel broad handle with blade number 15: 13
+
+# train/val 切分比例
+split:
+  val_ratio: 0.2
+  seed: 42

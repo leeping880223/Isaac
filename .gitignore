@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Isaac Sim / Omniverse Kit 執行期產生的快取、log
+*.log
+.nv_cache/
+kit_cache/
+.kit/
+
+# 資料生成輸出（capture_dataset.py / convert_to_yolo.py 的產物，可重現，不進 git）
+data_generation/output/
+output/
+
+# 即時推論的暫存截圖（yolo_isaac_final.py）
+tmp/
+
+# OS / 編輯器雜訊
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

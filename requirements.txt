@@ -1,0 +1,10 @@
+# YOLO 訓練與資料轉換環境
+# 安裝方式：pip install -r requirements.txt
+# 或用 setup.py：pip install -e .
+
+ultralytics==8.4.60
+opencv-python==4.13.0.92
+pyyaml
+numpy>=2.0
+torch>=2.0
+torchvision
